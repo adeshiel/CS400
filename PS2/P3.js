@@ -1,4 +1,4 @@
-function cubed(num){
+const cubed = (num) => {
   return Math.pow(num, 3);
 }
 
