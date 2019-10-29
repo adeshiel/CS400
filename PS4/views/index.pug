@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 Welcome to JobLocator!
+  form(method='POST' action='http://lvh.me:4000/PS4/search')
+          div.form-group
+            label(for='job') Job Keywords:
+            input#job.form-control(type='text', placeholder='Software Engineer ...' name='job')
+          div.form-group
+            label(for='location') Location:
+            input#location.form-control(type='text', placeholder='Boston, New York ...' name='location')
+          button.btn.btn-primary(type='submit') Search
