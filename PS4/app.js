@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const PORT = 4000;
 var indexRouter = require('./routes/index');
+var googleRouter = require('./routes/google');
 
 var app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/ps4', indexRouter);
+app.use('/ps4', googleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -36,7 +38,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(PORT, function() {
+app.listen(PORT, 'lvh.me', function() {
     console.log("Server is running on Port: " + PORT);
 });
 
