@@ -1,12 +1,38 @@
 extends layout
 
+
 block content
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js")
+  script.
+    $(document).ready(function(){
+      $("#country").change( function() {
+        if($(this).val() == "US"){
+          $("#state2").show()
+        } else {
+          $("#state2").hide()
+          }
+        });
+      });
+      
   h1 Welcome to JobLocator!
   form(method='POST' action='http://lvh.me:4000/PS4/search')
           div.form-group
-            label(for='job') Job Keywords:
-            input#job.form-control(type='text', placeholder='Software Engineer ...' name='job')
+            label(for='event') Keywords:
+            input#event.form-control(type='text', placeholder='Dog shows, plays, ...' name='event')
+            br
           div.form-group
-            label(for='location') Location:
-            input#location.form-control(type='text', placeholder='Boston, New York ...' name='location')
+            label(for='city') City:
+            input#city.form-control(type='text', placeholder='Boston, London...' name='city')
+          div.form-group
+            label(for='country') Country:
+            select#country.form-control(name='country')
+              each coun_name, coun_code in country_list
+                option(value=coun_code) #{coun_name}
+            br
+          div#state2.form-group
+            label(for='state') State:
+            select#state.form-control(name='state')
+              each st_name, st_code in state_list
+                option(value=st_code) #{st_name}
+            br
           button.btn.btn-primary(type='submit') Search

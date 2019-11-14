@@ -4,16 +4,17 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
 
 const oauth = require('../KEY');
+const countries = require('../country_names.json')
+const states = require('../states.json')
 
 const googleMapsClient = require('@google/maps').createClient({
   key: oauth.api_key
 });
-const talent = require('@google-cloud/talent').v4beta1;
 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index');
+  res.render('index', {country_list:countries, state_list:states});
 });
 
 
