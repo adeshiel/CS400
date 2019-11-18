@@ -1,6 +1,10 @@
 extends layout
 
 block content
+  h1 Your recents:
+  ul
+    each res in new_recents
+      li=res
   h1 Your data returned as follows:
   p #{data}
   div#map

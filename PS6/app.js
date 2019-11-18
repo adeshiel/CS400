@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const PORT = 4000;
 var indexRouter = require('./routes/index');
-var googleRouter = require('./routes/google');
+var ticketRouter = require('./routes/ticketmaster');
 
 var app = express();
 
@@ -19,8 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/ps4', indexRouter);
-app.use('/ps4', googleRouter);
+app.use('/ps6', indexRouter);
+app.use('/ps6', ticketRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
