@@ -27,22 +27,19 @@ const searchSchema = new Schema({
   datetime: Date,
   query: String,
   location: String,
+  result: String,
 });
 
 const searchModel = mongoose.model('Search2', searchSchema)
 
+router.get('/searched', async (req, res, next)=>{
+  let recents = await searchModel.find().sort({datetime:-1}).limit(5);
+  res.render('location', {data: recents.result, new_recents:recents});
+
+});
+
 
 router.post('/search', async (req, res, next) => {
-  let newSearch = new searchModel({
-    datetime: moment().format(),
-    query: req.body.event,
-    location: req.body.city + req.body.state + req.body.country
-  });
-
-  newSearch.save().then(function (err, search) {
-    if (err) return console.error(err);
-    console.log("Search logged.")
-  });
 
   try {
     const ret = await findEvents(req.body, res);
@@ -65,7 +62,6 @@ let please_die;
 const findEvents = async (body, response) => {
 
   try {
-      let recents = await searchModel.find().sort({datetime:-1}).limit(5)
 
       let url_option = 'https://app.ticketmaster.com/discovery/v2/events.json?apikey=' + oauth.ticket_key + "&keyword=" + body.event
       if(body.city){ url_option =  url_option+"&city="+body.city}
@@ -88,9 +84,21 @@ const findEvents = async (body, response) => {
           } catch {
             goodies = "None found."
           }
-          response.render('location', {data: goodies, new_recents:recents});
-          // console.log("Recents:\n" + recents)
 
+          let newSearch = new searchModel({
+            datetime: moment().format(),
+            query: body.event,
+            location: body.city + ", " + body.state + ", " + body.country,
+            result: goodies
+          });
+
+          newSearch.save().then(function (err, search) {
+            if (err) return console.error(err);
+            console.log("Search logged.")
+          });
+
+          response.redirect("/PS6/searched")
+          // response.render('location', {data: goodies, new_recents:recents});
         })
 
     } catch (e) {
