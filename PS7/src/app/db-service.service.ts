@@ -10,5 +10,9 @@ export class DbServiceService {
     return this.http.post('http://localhost:27017/searches', search);
   }
 
+  public newAPICall(call: any){
+    return this.http.post('http://localhost:4000/ps7/search', call)
+  }
+
   constructor(private http: HttpClient) { }
 }
