@@ -6,13 +6,17 @@ import {HttpClient} from '@angular/common/http';
 })
 export class DbServiceService {
 
+  result;
+
   public newSearch(search: any){
-    return this.http.post('http://localhost:27017/searches', search);
+    return this.http.post('http://localhost:4000/ps7/search', search).subscribe();
   }
 
-  public newAPICall(call: any){
-    return this.http.post('http://localhost:4000/ps7/search', call)
+  public newAPICall(){
+    return this.http.get('http://localhost:4000/ps7/searched')
+
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 }

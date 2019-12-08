@@ -2,9 +2,10 @@ const express = require('express');
 const request = require('request')
 const router = express.Router();
 const {OAuth2Client} = require('google-auth-library');
+const cors = require('cors');
+router.use(cors())
 router.use(express.json());
 router.use(express.urlencoded({ extended: false }));
-
 const oauth = require('../KEY.js');
 const private = require('../private.json')
 const secret = require('../secret.json')
@@ -34,13 +35,14 @@ const searchModel = mongoose.model('Search2', searchSchema)
 
 router.get('/searched', async (req, res, next)=>{
   let recents = await searchModel.find().sort({datetime:-1}).limit(5);
-  res.render('location', {data: recents.result, new_recents:recents});
+  // res.render('location', {data: recents.result, new_recents:recents});
+  res.send(recents)
 
 });
 
 
 router.post('/search', async (req, res, next) => {
-
+  console.log(req.body)
   try {
     const ret = await findEvents(req.body, res);
 
@@ -57,12 +59,12 @@ const parseDocs = (docs) => {
   })
 }
 
-let please_die;
 // const find_recents = async () => { return await searchModel.find().sort({datetime:-1}).limit(5).exec()
 const findEvents = async (body, response) => {
 
   try {
 
+    // console.log(typeof body.country)
       let url_option = 'https://app.ticketmaster.com/discovery/v2/events.json?apikey=' + oauth.ticket_key + "&keyword=" + body.event
       if(body.city){ url_option =  url_option+"&city="+body.city}
       if(body.country){ url_option =  url_option+"&countryCode="+body.country}
@@ -97,7 +99,7 @@ const findEvents = async (body, response) => {
             console.log("Search logged.")
           });
 
-          response.redirect("/PS6/searched")
+          response.redirect("/ps7/searched")
           // response.render('location', {data: goodies, new_recents:recents});
         })
 

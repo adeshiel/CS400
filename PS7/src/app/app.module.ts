@@ -8,12 +8,14 @@ import { AppComponent } from './app.component';
 import { SeachFormComponent } from './seach-form/seach-form.component';
 import { TestComponent } from './test/test.component';
 import { DbServiceService } from './db-service.service';
+import { DisplayComponent } from './display/display.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SeachFormComponent,
-    TestComponent
+    TestComponent,
+    DisplayComponent
   ],
   imports: [
     BrowserModule,

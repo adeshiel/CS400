@@ -1,4 +1,4 @@
-  <form [formGroup]="inputForm" (ngSubmit) = "processForm(inputForm.value)" action="http://lvh.me:4000/PS6/search" method="post">
+  <form [formGroup]="inputForm" (ngSubmit) = "processForm(inputForm.value)" action="http://lvh.me:4000/ps7/search" method="post">
     <div class="form-group">
       <label for="event">Keyword: </label>
       <input type="text" class="form-control" id="event"  formControlName="event"  placeholder='Dog shows, plays, ...' required ngModel>
@@ -22,6 +22,11 @@
 
     </div>
 
-    <button type="submit" class="btn" onclick="window.location='http://localhost:3000/wait';">Go!</button>
+    <button type="submit" class="btn">Go!</button>
 
   </form>
+
+<div *ngIf="result == null; else elseBlock"></div>
+<ng-template #elseBlock>
+  <app-display [data]="result"></app-display>
+</ng-template>
