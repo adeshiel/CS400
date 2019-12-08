@@ -36,7 +36,8 @@ const searchModel = mongoose.model('Search2', searchSchema)
 router.get('/searched', async (req, res, next)=>{
   let recents = await searchModel.find().sort({datetime:-1}).limit(5);
   // res.render('location', {data: recents.result, new_recents:recents});
-  res.send(recents)
+  console.log(JSON.parse(recents[0].result))
+  res.send(recents[0].result)
 
 });
 
