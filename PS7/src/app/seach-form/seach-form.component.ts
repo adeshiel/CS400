@@ -12,7 +12,7 @@ export class SeachFormComponent implements OnInit {
   countries;
   states;
   help: string;
-  public result;
+  public result: any;
   processForm(form) :void {
     this.db.newSearch(form);
     this.inputForm.reset();
@@ -22,7 +22,7 @@ export class SeachFormComponent implements OnInit {
       error: err => console.log(err),
       complete: () => console.log("Got request")
     });
-    console.log(this.result)
+
   }
   constructor(private db: DbServiceService, private formBuilder: FormBuilder) {
     this.states = {
@@ -342,7 +342,7 @@ export class SeachFormComponent implements OnInit {
     this.help = 'Please for the love of god'
     this.result = ""
     this.inputForm = this.formBuilder.group({
-      event: '',
+      event: ' ',
       country: '',
       city: '',
       state: ''

@@ -24,6 +24,7 @@ db.once('open', function() {
   console.log("Connected to database.")
 });
 
+var last_search;
 const searchSchema = new Schema({
   datetime: Date,
   query: String,
@@ -35,9 +36,14 @@ const searchModel = mongoose.model('Search2', searchSchema)
 
 router.get('/searched', async (req, res, next)=>{
   let recents = await searchModel.find().sort({datetime:-1}).limit(5);
-  // res.render('location', {data: recents.result, new_recents:recents});
-  console.log(JSON.parse(recents[0].result))
-  res.send(recents[0].result)
+  setTimeout(function () {
+    if(last_search){
+      res.send(last_search)
+    } else {
+      res.send(recents[0].result)
+    }
+  }, 5000);
+
 
 });
 
@@ -61,15 +67,15 @@ const parseDocs = (docs) => {
 }
 
 // const find_recents = async () => { return await searchModel.find().sort({datetime:-1}).limit(5).exec()
-const findEvents = async (body, response) => {
+const findEvents = async (og_body, response) => {
 
   try {
 
     // console.log(typeof body.country)
-      let url_option = 'https://app.ticketmaster.com/discovery/v2/events.json?apikey=' + oauth.ticket_key + "&keyword=" + body.event
-      if(body.city){ url_option =  url_option+"&city="+body.city}
-      if(body.country){ url_option =  url_option+"&countryCode="+body.country}
-      if(body.state){ url_option =  url_option+"&stateCode="+body.state}
+      let url_option = 'https://app.ticketmaster.com/discovery/v2/events.json?apikey=' + oauth.ticket_key + "&keyword=" + og_body.event
+      if(og_body.city){ url_option =  url_option+"&city="+og_body.city}
+      if(og_body.country){ url_option =  url_option+"&countryCode="+og_body.country}
+      if(og_body.state){ url_option =  url_option+"&stateCode="+og_body.state}
 
       console.log(url_option)
 
@@ -87,14 +93,14 @@ const findEvents = async (body, response) => {
           } catch {
             goodies = "None found."
           }
+          last_search = goodies;
 
           let newSearch = new searchModel({
             datetime: moment().format(),
-            query: body.event,
-            location: body.city + ", " + body.state + ", " + body.country,
+            query: og_body.event,
+            location: og_body.city + ", " + og_body.state + ", " + og_body.country,
             result: goodies
           });
-
           newSearch.save().then(function (err, search) {
             if (err) return console.error(err);
             console.log("Search logged.")

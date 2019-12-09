@@ -1,6 +1,6 @@
 <h3>Data returned:</h3><br>
-<!-- <h4> {{data}} </h4> -->
-
+<div #gmap id="gmap" style="width:100%;height:400px"></div>
 <ul>
-  <li *ngFor="let res of data"> {{res | json}} </li>
+  <li *ngFor="let res of marks"> {{res | json}} </li>
 </ul>
+<div id="load"></div>
